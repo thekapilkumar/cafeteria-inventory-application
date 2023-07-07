@@ -1,4 +1,3 @@
-import {hash} from 'bcryptjs';
 import Joi from 'joi';
 import mongoose from 'mongoose';
 
@@ -20,7 +19,6 @@ export default async function createsuperuser(
 ) {
   const args = {email, firstName, lastName, password};
   const validatedData = await createSuperUserSchema.validateAsync(args);
-  validatedData.password = await hash(validatedData.password, SALT);
   const newUser = new User({...validatedData, isAdmin: true});
   await mongoose.connect(MONGO_URI);
   await newUser.save();
